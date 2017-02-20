@@ -1,0 +1,4 @@
+tika:
+    resource: "@TikaBundle/Controller/"
+    type:     annotation
+    prefix:   /

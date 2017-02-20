@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  app:
+    container_name: tikaAp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:80
+    volumes:
+      - ./tikaAp:/project
+      - data_logs:/logs
+    working_dir: /project
+    stdin_open: true
+
+  db:
+    container_name: tikaAp-db
+    image: mariadb:10.1
+    ports:
+      - "8888:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=marcin
+      - MYSQL_DATABASE=tikaAp
+    volumes:
+      - data_db:/databases
+      - "./docker/config-file.cnf:/etc/mysql/conf.d/config-file.cnf"
+
+  admin:
+    container_name: tikaAp-pma
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "9009:80"
+    environment:
+      - "PMA_USER=root"
+      - "PMA_PASSWORD=marcin"
+
+volumes:
+  data_db: {}
+  data_logs: {}
