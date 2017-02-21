@@ -7,7 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-
+/**
+ * UploadedFile form
+ */
 class UploadedFileType extends AbstractType
 {
     /**
@@ -15,18 +17,16 @@ class UploadedFileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('fileName', FileType::class, array('label' => 'file',
-                                                        'data_class' => null));
+        $builder->add('fileName', FileType::class, array('label' => 'file', 'data_class' => null, ));
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'TikaBundle\Entity\UploadedFile'
-        ));
+        'data_class' => 'TikaBundle\Entity\UploadedFile', ));
     }
 
     /**
@@ -36,6 +36,4 @@ class UploadedFileType extends AbstractType
     {
         return 'tikabundle_file';
     }
-
-
 }

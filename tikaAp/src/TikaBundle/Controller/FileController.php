@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * File controller.
- * //@codingStandardsIgnoreStart
+ * @codingStandardsIgnoreStart
  * @Route("file")
  */
 class FileController extends Controller
@@ -121,5 +121,5 @@ class FileController extends Controller
             ->getForm()
         ;
     }
-    //// @codingStandardsIgnoreEnd
+    // @codingStandardsIgnoreEnd
 }

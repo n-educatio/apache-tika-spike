@@ -15,3 +15,5 @@
 /vendor/
 /web/bundles/
 /web/uploads/
+/web/app_dev.php
+
