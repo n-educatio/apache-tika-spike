@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  app:
+  tika_app:
     container_name: tikaAp
     build:
       context: .
@@ -13,28 +13,30 @@ services:
       - data_logs:/logs
     working_dir: /project
     stdin_open: true
+    links:
+      - db
 
   db:
     container_name: tikaAp-db
     image: mariadb:10.1
     ports:
-      - "8888:3306"
+      - "8880:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=marcin
       - MYSQL_DATABASE=tikaAp
     volumes:
-      - data_db:/databases
+      - data_tikadb:/databases
       - "./docker/config-file.cnf:/etc/mysql/conf.d/config-file.cnf"
 
-  admin:
+  tika_admin:
     container_name: tikaAp-pma
     image: phpmyadmin/phpmyadmin
     ports:
-      - "9009:80"
+      - "9000:80"
     environment:
       - "PMA_USER=root"
       - "PMA_PASSWORD=marcin"
 
 volumes:
-  data_db: {}
+  data_tikadb: {}
   data_logs: {}

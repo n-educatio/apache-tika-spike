@@ -50,8 +50,11 @@ class FileController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $fileName = $form->getData()->getFileName()->getClientOriginalName();
+            $file = $new_file->getFileName();
+            dump($new_file->getFileName());
 
-            $path = $this->get('app.file_uploader')->upload($fileName);
+
+            $path = $this->get('app.file_uploader')->upload($file);
 
             $new_file->setFileName($fileName);
             $new_file->setPath($path);
