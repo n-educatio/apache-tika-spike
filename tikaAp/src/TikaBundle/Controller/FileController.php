@@ -5,19 +5,19 @@ namespace TikaBundle\Controller;
 use TikaBundle\Entity\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * File controller.
- *
+ * //@codingStandardsIgnoreStart
  * @Route("file")
  */
 class FileController extends Controller
 {
     /**
      * Lists all file entities.
-     *
      * @Route("/", name="file_index")
      * @Method("GET")
      */
@@ -40,34 +40,32 @@ class FileController extends Controller
      */
     public function newAction(Request $request)
     {
-        $new_file = new UploadedFile();
-        $form = $this->createForm('TikaBundle\Form\UploadedFileType', $new_file);
+        $newFile = new UploadedFile();
+        $form = $this->createForm('TikaBundle\Form\UploadedFileType', $newFile);
         $form->handleRequest($request);
 
-        $new_file->setMetadata('1');
+        $newFile->setMetadata('1');
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             $fileName = $form->getData()->getFileName()->getClientOriginalName();
-            $file = $new_file->getFileName();
-            dump($new_file->getFileName());
-
+            $file = $newFile->getFileName();
 
             $path = $this->get('app.file_uploader')->upload($file);
 
-            $new_file->setFileName($fileName);
-            $new_file->setPath($path);
+            $newFile->setFileName($fileName);
+            $newFile->setPath($path);
 
 
-            $em->persist($new_file);
-            $em->flush($new_file);
+            $em->persist($newFile);
+            $em->flush($newFile);
 
-            return $this->redirectToRoute('file_show', array('id' => $new_file->getId()));
+            return $this->redirectToRoute('file_show', array('id' => $newFile->getId()));
         }
 
         return $this->render('file/new.html.twig', array(
-            'file' => $new_file,
+            'file' => $newFile,
             'form' => $form->createView(),
         ));
     }
@@ -81,34 +79,9 @@ class FileController extends Controller
     public function showAction(UploadedFile $file)
     {
         $deleteForm = $this->createDeleteForm($file);
-
+        
         return $this->render('file/show.html.twig', array(
             'file' => $file,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
-    /**
-     * Displays a form to edit an existing file entity.
-     *
-     * @Route("/{id}/edit", name="file_edit")
-     * @Method({"GET", "POST"})
-     */
-    public function editAction(Request $request, UploadedFile $file)
-    {
-        $deleteForm = $this->createDeleteForm($file);
-        $editForm = $this->createForm('TikaBundle\Form\UploadedFileType', $file);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('file_edit', array('id' => $file->getId()));
-        }
-
-        return $this->render('file/edit.html.twig', array(
-            'file' => $file,
-            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -148,4 +121,5 @@ class FileController extends Controller
             ->getForm()
         ;
     }
+    //// @codingStandardsIgnoreEnd
 }

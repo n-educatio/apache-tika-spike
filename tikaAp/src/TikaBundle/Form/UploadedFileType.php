@@ -15,7 +15,8 @@ class UploadedFileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('fileName', FileType::class, array('label' => 'file'));//->add('metadata')        ;
+        $builder->add('fileName', FileType::class, array('label' => 'file',
+                                                        'data_class' => null));
     }
     
     /**

@@ -36,6 +36,12 @@ services:
     environment:
       - "PMA_USER=root"
       - "PMA_PASSWORD=marcin"
+      
+  tika_java:
+    container_name: tikaAp-server
+    image: fmantuano/apache-tika-server
+    ports:
+      - "9998:9998"
 
 volumes:
   data_tikadb: {}
