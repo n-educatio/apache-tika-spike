@@ -13,20 +13,30 @@
             </tr>
         </thead>
         <tbody>
-        {% for file in files %}
-            <tr>
-                <td><a href="{{ path('file_show', { 'id': file.id }) }}">{{ file.id }}</a></td>
-                <td>{{ file.fileName }}</td>
-                <td>{{ file.metadata }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('file_show', { 'id': file.id }) }}">show</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% for file in files %}
+                <tr>
+                    <td><a href="{{ path('file_show', { 'id': file.id }) }}">{{ file.id }}</a></td>
+                    <td>{{ file.fileName }}</td>
+                    <td>
+                        <ul>            
+                            {%for key, file in file.metadata %}
+                                {% if file is not iterable %}
+                                    <li>
+                                        {{ key }} - {{ file|e }}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('file_show', { 'id': file.id }) }}">show</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

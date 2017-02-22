@@ -20,7 +20,8 @@ use TikaBundle\Entity\UpFile;
  *
  * @Route("file")
  */
-class UpFileController extends Controller {
+class UpFileController extends Controller
+{
 
     /**
      * Lists all file entities.
@@ -29,7 +30,8 @@ class UpFileController extends Controller {
      * @Template
      * @return type
      */
-    public function indexAction() {
+    public function indexAction()
+    {
         $em = $this->getDoctrine()->getManager();
 
         $files = $em->getRepository('TikaBundle:UpFile')->findAll();
@@ -48,7 +50,8 @@ class UpFileController extends Controller {
      * @param Request $request
      * @return type
      */
-    public function newAction(Request $request) {
+    public function newAction(Request $request)
+    {
         $newFile = new UpFile();
         $form = $this->createForm('TikaBundle\Form\UpFileType', $newFile);
         $form->handleRequest($request);
@@ -62,7 +65,7 @@ class UpFileController extends Controller {
             $file = $newFile->getFileName();
 
             $path = $this->get('app.file_uploader')->upload($file);
-            $realPath = $this->getParameter('uploadedfiles') . "/" . $path;
+            $realPath = $this->getParameter('uploadedfiles')."/".$path;
 
             $newFile->setMetadata($this->metaRead($realPath));
             $newFile->setFileName($fileName);
@@ -88,7 +91,8 @@ class UpFileController extends Controller {
      * @param UpFile $file
      * @return type
      */
-    public function showAction(UpFile $file) {
+    public function showAction(UpFile $file)
+    {
         $deleteForm = $this->createDeleteForm($file);
 
         return array(
@@ -102,11 +106,12 @@ class UpFileController extends Controller {
      *
      * @Route("/{id}", name="file_delete")
      * @Method("DELETE")
-     * @param Request      $request
-     * @param UpFile $file
+     * @param Request $request
+     * @param UpFile  $file
      * @return type
      */
-    public function deleteAction(Request $request, UpFile $file) {
+    public function deleteAction(Request $request, UpFile $file)
+    {
         $form = $this->createDeleteForm($file);
         $form->handleRequest($request);
 
@@ -126,7 +131,8 @@ class UpFileController extends Controller {
      *
      * @return Form The form
      */
-    private function createDeleteForm(UpFile $file) {
+    private function createDeleteForm(UpFile $file)
+    {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('file_delete', array('id' => $file->getId())))
                         ->setMethod('DELETE')
@@ -141,7 +147,8 @@ class UpFileController extends Controller {
      * @return type
      * @throws RuntimeException
      */
-    private function metaRead($filePath) {
+    private function metaRead($filePath)
+    {
 
         $url = "http://tika_java:9998/meta";
 
@@ -164,5 +171,4 @@ class UpFileController extends Controller {
             return ($result);
         }
     }
-
 }

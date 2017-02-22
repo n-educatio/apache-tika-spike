@@ -3,6 +3,7 @@
 namespace TikaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * File
@@ -41,7 +42,6 @@ class UpFile
      * @ORM\Column(name="metadata", type="text")
      */
     private $metadata;
-    
 
     /**
      * Get id
@@ -122,6 +122,7 @@ class UpFile
      */
     public function getMetadata()
     {
-        return $this->metadata;
+
+        return json_decode($this->metadata, true, $depth=100);
     }
 }
