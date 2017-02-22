@@ -5,35 +5,38 @@ namespace TikaBundle\Controller;
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use SplFileInfo;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Process\Process;
-use TikaBundle\Entity\UploadedFile;
+use TikaBundle\Entity\UpFile;
 
 /**
  * File controller.
- * 
+ *
  * @Route("file")
  */
-class FileController extends Controller {
+class UpFileController extends Controller {
 
     /**
      * Lists all file entities.
      * @Route("/", name="file_index")
      * @Method("GET")
+     * @Template
      * @return type
      */
     public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
-        $files = $em->getRepository('TikaBundle:UploadedFile')->findAll();
+        $files = $em->getRepository('TikaBundle:UpFile')->findAll();
 
-        return $this->render('file/index.html.twig', array(
-                    'files' => $files,
-        ));
+        return array(
+            'files' => $files,
+        );
     }
 
     /**
@@ -41,12 +44,13 @@ class FileController extends Controller {
      *
      * @Route("/new", name="file_new")
      * @Method({"GET", "POST"})
+     * @Template
      * @param Request $request
      * @return type
      */
     public function newAction(Request $request) {
-        $newFile = new UploadedFile();
-        $form = $this->createForm('TikaBundle\Form\UploadedFileType', $newFile);
+        $newFile = new UpFile();
+        $form = $this->createForm('TikaBundle\Form\UpFileType', $newFile);
         $form->handleRequest($request);
 
         $newFile->setMetadata('1');
@@ -59,7 +63,7 @@ class FileController extends Controller {
 
             $path = $this->get('app.file_uploader')->upload($file);
             $realPath = $this->getParameter('uploadedfiles') . "/" . $path;
-            
+
             $newFile->setMetadata($this->metaRead($realPath));
             $newFile->setFileName($fileName);
             $newFile->setPath($path);
@@ -69,10 +73,10 @@ class FileController extends Controller {
             return $this->redirectToRoute('file_show', array('id' => $newFile->getId()));
         }
 
-        return $this->render('file/new.html.twig', array(
-                    'file' => $newFile,
-                    'form' => $form->createView(),
-        ));
+        return array(
+            'file' => $newFile,
+            'form' => $form->createView(),
+        );
     }
 
     /**
@@ -80,16 +84,17 @@ class FileController extends Controller {
      *
      * @Route("/{id}", name="file_show")
      * @Method("GET")
-     * @param UploadedFile $file
+     * @Template
+     * @param UpFile $file
      * @return type
      */
-    public function showAction(UploadedFile $file) {
+    public function showAction(UpFile $file) {
         $deleteForm = $this->createDeleteForm($file);
 
-        return $this->render('file/show.html.twig', array(
-                    'file' => $file,
-                    'delete_form' => $deleteForm->createView(),
-        ));
+        return array(
+            'file' => $file,
+            'delete_form' => $deleteForm->createView(),
+        );
     }
 
     /**
@@ -97,11 +102,11 @@ class FileController extends Controller {
      *
      * @Route("/{id}", name="file_delete")
      * @Method("DELETE")
-     * @param Request $request
-     * @param UploadedFile $file
+     * @param Request      $request
+     * @param UpFile $file
      * @return type
      */
-    public function deleteAction(Request $request, UploadedFile $file) {
+    public function deleteAction(Request $request, UpFile $file) {
         $form = $this->createDeleteForm($file);
         $form->handleRequest($request);
 
@@ -117,11 +122,11 @@ class FileController extends Controller {
     /**
      * Creates a form to delete a file entity.
      *
-     * @param File $file The file entity
+     * @param UpFile $file The file entity
      *
      * @return Form The form
      */
-    private function createDeleteForm(UploadedFile $file) {
+    private function createDeleteForm(UpFile $file) {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('file_delete', array('id' => $file->getId())))
                         ->setMethod('DELETE')
@@ -131,7 +136,7 @@ class FileController extends Controller {
 
     /**
      * Read metadata from Apache Tika server
-     * 
+     *
      * @param type $fileName
      * @return type
      * @throws RuntimeException
@@ -144,7 +149,7 @@ class FileController extends Controller {
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl, CURLOPT_HEADER, array("Accept: application/json"));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_BINARYTRANSFER, 1);
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -156,7 +161,8 @@ class FileController extends Controller {
 
         curl_close($curl);
         if ($result) {
-            return $result;
+            return ($result);
         }
     }
+
 }

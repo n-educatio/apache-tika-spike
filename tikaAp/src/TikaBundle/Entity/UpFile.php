@@ -8,9 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
  * File
  *
  * @ORM\Table(name="uploaded_file")
- * @ORM\Entity(repositoryClass="TikaBundle\Repository\FileRepository")
+ * @ORM\Entity(repositoryClass="TikaBundle\Repository\UpFileRepository")
  */
-class UploadedFile
+class UpFile
 {
     /**
      * @var int

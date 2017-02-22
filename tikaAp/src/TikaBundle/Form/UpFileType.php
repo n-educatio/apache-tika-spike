@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 /**
  * UploadedFile form
  */
-class UploadedFileType extends AbstractType
+class UpFileType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ class UploadedFileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-        'data_class' => 'TikaBundle\Entity\UploadedFile', ));
+        'data_class' => 'TikaBundle\Entity\UpFile', ));
     }
 
     /**
