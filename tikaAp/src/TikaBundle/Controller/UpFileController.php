@@ -25,7 +25,7 @@ class UpFileController extends Controller
 
     /**
      * Lists all file entities.
-     * @Route("/", name="file_index")
+     * @Route("/index", name="file_index")
      * @Method("GET")
      * @Template
      * @return type
@@ -44,9 +44,9 @@ class UpFileController extends Controller
     /**
      * Creates a new file entity with metadata from Apache Tika.
      *
-     * @Route("/new", name="file_new")
+     * @Route("/", name="file_new")
      * @Method({"GET", "POST"})
-     * @Template
+     * @Template("TikaBundle::base.html.twig")
      * @param Request $request
      * @return type
      */
@@ -57,6 +57,10 @@ class UpFileController extends Controller
         $form->handleRequest($request);
 
         $newFile->setMetadata('1');
+        $em = $this->getDoctrine()->getManager();
+
+        $files = $em->getRepository('TikaBundle:UpFile')->findAll();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -73,12 +77,13 @@ class UpFileController extends Controller
             $em->persist($newFile);
             $em->flush($newFile);
 
-            return $this->redirectToRoute('file_show', array('id' => $newFile->getId()));
+            return $this->redirectToRoute('file_new');// array('id' => $newFile->getId()));
         }
 
         return array(
             'file' => $newFile,
             'form' => $form->createView(),
+            //'files' => $files,
         );
     }
 
@@ -114,6 +119,8 @@ class UpFileController extends Controller
     {
         $form = $this->createDeleteForm($file);
         $form->handleRequest($request);
+
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();

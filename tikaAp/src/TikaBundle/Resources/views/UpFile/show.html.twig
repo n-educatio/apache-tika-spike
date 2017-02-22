@@ -1,43 +1,37 @@
-{% extends 'base.html.twig' %}
+{#{% extends 'base.html.twig' %}#}
 
-{% block body %}
-    <h1>File</h1>
+{% block meta_data %}
+    {% if file is defined %}
+    <h3 class="text-center">{{ file.fileName }}</h3>
+    {{  dump() }}
+    {#{% if file is defined %}#}
+    {#<table class="table table-striped">#}
+        {#<tbody>#}
+            {#<tr>#}
+                {#<th class="text-center" colspan="2">Metadata</th>#}
+            {#</tr>#}
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ file.id }}</td>
-            </tr>
-            <tr>
-                <th>Path</th>
-                <td>{{ file.fileName }}</td>
-            </tr>
-            <tr>
-                <th>Metadata</th>
-                <td>
-                    <ul>            
-                        {%for key, file in file.metadata %}
-                            {% if file is not iterable %}
-                                <li>
-                                    {{ key }} - {{ file|e }}
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                {#{%for key, file in file.metadata %}#}
+                    {#{% if file is not iterable %}#}
+                    {#<tr>#}
+                        {#<td>{{ key }}</td>#}
+                        {#<td>{{ file|e }}</td>#}
+                     {#</tr>#}
+                    {#{% endif %}#}
+                {#{% endfor %}#}
+        {#</tbody>#}
+    {#</table>#}
 
-    <ul>
-        <li>
-            <a href="{{ path('file_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-            <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    {#<ul>#}
+        {#<li>#}
+            {#<a href="{{ path('file_index') }}">Back to the list</a>#}
+        {#</li>#}
+        {#<li>#}
+            {#{% if  %}#}
+            {#{{ form_start(delete_form) }}#}
+            {#<input type="submit" value="Delete">#}
+            {#{{ form_end(delete_form) }}#}
+        {#</li>#}
+    {#</ul>#}
+    {% endif %}
 {% endblock %}
