@@ -35,11 +35,28 @@ class UpFileController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $files = $em->getRepository('TikaBundle:UpFile')->findAll();
+        $files = $em->getRepository('TikaBundle:UpFile')->findAllOrdered();
 
         return array(
             'files' => $files,
         );
+    }
+
+    /**
+     * Lists all file entities.
+     * @Route("/index/{name}", name="file_index_by_name", defaults={"name"=""})
+     * @Method("GET")
+     * @Template("TikaBundle::base.html.twig")
+     * @return type
+     */
+    public function indexByNameAction($name)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $files = $em->getRepository('TikaBundle:UpFile')->findByNameOrdered($name);
+
+        return new JsonResponse($files);
+
     }
 
     /**
