@@ -4,18 +4,11 @@
     <h1 class="text-center">Files list</h1>
 
     <table id="metaInput" class="table table-striped">
-        <thead>
-            <tr>
-                <th>Metadata</th>
-            </tr>
-        </thead>
         <tbody>
-
-
             {% for file in files %}
                 <tr>
                     <td>
-                        <a data-href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
+                        <a href="#" data-href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
                     </td>
                 </tr>
             {% endfor %}

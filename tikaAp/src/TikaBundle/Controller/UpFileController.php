@@ -84,7 +84,6 @@ class UpFileController extends Controller
         return array(
             'file' => $newFile,
             'form' => $form->createView(),
-            //'files' => $files,
         );
     }
 

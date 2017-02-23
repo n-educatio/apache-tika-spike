@@ -4,7 +4,9 @@
     <h1 class="text-center">File creation</h1>
 
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+
+        {{ form_widget(form.fileName, { 'attr': {'class':'btn center-block'} }) }}
+        <input class='btn center-block' type="submit" value="Create" />
+
     {{ form_end(form) }}
 {% endblock %}
