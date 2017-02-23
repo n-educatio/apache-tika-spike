@@ -12,6 +12,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Process\Process;
 use TikaBundle\Entity\UpFile;
 
@@ -96,55 +97,11 @@ class UpFileController extends Controller
      * @param UpFile $file
      * @return type
      */
-    public function showAction(UpFile $file)
+    public function showAction(Request $request, UpFile $file)
     {
-        $deleteForm = $this->createDeleteForm($file);
+        $metaData = $file->getMetadata();
+        return new JsonResponse($metaData);
 
-        return array(
-            'file' => $file,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a file entity.
-     *
-     * @Route("/{id}", name="file_delete")
-     * @Method("DELETE")
-     * @param Request $request
-     * @param UpFile  $file
-     * @return type
-     */
-    public function deleteAction(Request $request, UpFile $file)
-    {
-        $form = $this->createDeleteForm($file);
-        $form->handleRequest($request);
-
-
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($file);
-            $em->flush($file);
-        }
-
-        return $this->redirectToRoute('file_index');
-    }
-
-    /**
-     * Creates a form to delete a file entity.
-     *
-     * @param UpFile $file The file entity
-     *
-     * @return Form The form
-     */
-    private function createDeleteForm(UpFile $file)
-    {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('file_delete', array('id' => $file->getId())))
-                        ->setMethod('DELETE')
-                        ->getForm()
-        ;
     }
 
     /**

@@ -1,16 +1,10 @@
 {#{% extends 'base.html.twig' %}#}
-
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
 {% block add_file %}
-    <h1>File creation</h1>
+    <h1 class="text-center">File creation</h1>
 
     {{ form_start(form) }}
         {{ form_widget(form) }}
         <input type="submit" value="Create" />
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('file_index') }}">Back to the list</a>
-        </li>
-    </ul>
 {% endblock %}

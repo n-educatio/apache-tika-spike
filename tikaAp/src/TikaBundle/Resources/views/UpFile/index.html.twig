@@ -1,9 +1,9 @@
 {#{% extends 'base.html.twig' %}#}
 
 {% block file %}
-    <h1>Files list</h1>
+    <h1 class="text-center">Files list</h1>
 
-    <table class="table table-striped">
+    <table id="metaInput" class="table table-striped">
         <thead>
             <tr>
                 <th>Metadata</th>
@@ -15,16 +15,10 @@
             {% for file in files %}
                 <tr>
                     <td>
-                        <a href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
+                        <a data-href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('file_new') }}">Create a new file</a>
-        </li>
-    </ul>
 {% endblock %}

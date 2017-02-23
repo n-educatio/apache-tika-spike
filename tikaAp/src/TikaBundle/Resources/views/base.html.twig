@@ -13,28 +13,26 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    {#{% render path('file_index') %}#}
                     {% block file %}
-                        {#{% include 'TikaBundle:UpFile:index.html.twig' with {'files':'files'}%}#}
                         {{ render(controller('TikaBundle:UpFile:index')) }}
                     {% endblock %}
                 </div>
                 <div class="col-md-3">
                     {% block add_file %}
-                        {#{{ render(controller('TikaBundle:UpFile:new')) }}#}
                         {% include 'TikaBundle:UpFile:new.html.twig' %}
                     {% endblock %}
                 </div>
                 <div class="col-md-5">
                     {% block meta_data %}
-                        {#{% include 'TikaBundle:UpFile:show.html.twig' %}#}
-                        {#{%  render path('file_show') %}#}
-                        {{ render(controller('TikaBundle:UpFile:show', {'id': file.id})) }}
+                        {% include 'TikaBundle:UpFile:show.html.twig' %}
                     {% endblock %}
                 </div>
             </div>
         </div>
             {% block body %}{% endblock %}
-            {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+            <script src="{{ asset('bundles/TikaBundle/js/metadata.loader.js') }}"></script>
+        {% endblock %}
     </body>
 </html>
