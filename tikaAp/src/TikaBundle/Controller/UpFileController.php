@@ -44,7 +44,7 @@ class UpFileController extends Controller
 
     /**
      * Lists all file entities.
-     * @Route("/index/{name}", name="file_index_by_name", defaults={"name"=""})
+     * @Route("/{name}", name="file_index_by_name", defaults={"name"=""})
      * @Method("GET")
      * @Template("TikaBundle::base.html.twig")
      * @return type
@@ -107,7 +107,7 @@ class UpFileController extends Controller
     /**
      * Finds and displays a file entity.
      *
-     * @Route("/{id}", name="file_show")
+     * @Route("/index/{id}", name="file_show")
      * @Method("GET")
      * @Template
      * @param UpFile $file

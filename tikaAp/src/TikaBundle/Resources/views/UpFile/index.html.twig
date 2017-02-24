@@ -8,7 +8,7 @@
             {% for file in files %}
                 <tr>
                     <td>
-                        <a href="#" data-href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
+                        <a href="#" class="metaLink" data-href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
                     </td>
                 </tr>
             {% endfor %}

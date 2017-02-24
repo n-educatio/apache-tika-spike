@@ -29,7 +29,7 @@ class UpFileRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy("file.fileName")
             ->setParameter("name", "%". $names . "%")
             ->getQuery()
-            ->getResult();
+            ->getArrayResult();
 
         return $query;
     }
