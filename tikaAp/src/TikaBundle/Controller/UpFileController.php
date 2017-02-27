@@ -48,6 +48,7 @@ class UpFileController extends Controller
      * @Method("GET")
      * @Template("TikaBundle::base.html.twig")
      * @return type
+     * @param object $name
      */
     public function indexByNameAction($name)
     {
@@ -56,7 +57,6 @@ class UpFileController extends Controller
         $files = $em->getRepository('TikaBundle:UpFile')->findByNameOrdered($name);
 
         return new JsonResponse($files);
-
     }
 
     /**
@@ -111,13 +111,16 @@ class UpFileController extends Controller
      * @Method("GET")
      * @Template
      * @param UpFile $file
-     * @return type
+     * @return JsonResponse
      */
-    public function showAction(Request $request, UpFile $file)
+    public function showAction(UpFile $file)
     {
         $metaData = $file->getMetadata();
-        return new JsonResponse($metaData);
+        if (!$metaData) {
+            return new JsonResponse(["error" => " no metadata for this file "]);
+        }
 
+        return new JsonResponse($metaData);
     }
 
     /**
@@ -135,6 +138,7 @@ class UpFileController extends Controller
         $image = fopen($filePath, "rb");
 
         $curl = curl_init();
+        curl_setopt($curl, CURLOPT_FAILONERROR, true);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
