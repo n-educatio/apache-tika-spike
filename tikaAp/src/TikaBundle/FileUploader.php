@@ -7,19 +7,32 @@
  */
 
 namespace TikaBundle;
+
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
+/**
+ * Class FileUploader
+ * @package TikaBundle
+ */
 class FileUploader
 {
 
     private $targetDir;
 
+    /**
+     * FileUploader constructor.
+     * @param target_dir $targetDir
+     */
     public function __construct($targetDir)
     {
         $this->targetDir = $targetDir;
     }
 
+    /**
+     * @param UploadedFile $file
+     * @return string
+     */
     public function upload(UploadedFile $file)
     {
         $path = md5(uniqid()).'.'.$file->guessExtension();

@@ -79,46 +79,20 @@ class UpFileController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            //dump($form->getData('fileName'));
             $filesData = $form->getData()->getFileName();
+            $file = $newFile->getFileName();
 
-
-            $file = $newFile->getFileName();    //tablica obiektów UploadFile
             foreach ($filesData as $index => $filesNames) {
                 $newFile = new UpFile();
-                //dump($file);
-                dump($file[$index]);        //poszczególny obiekt
-                //dump($file[$index]->getClientOriginalName());
                 $path = $this->get('app.file_uploader')->upload($file[$index]);
                 $realPath = $this->getParameter('uploadedfiles')."/".$path;
-                dump("xxx");
+                $newFile->setMetadata($this->metaRead($realPath));
+                $newFile->setFileName($file[$index]->getClientOriginalName());
+                $newFile->setPath($path);
 
-                dump($newFile->setFileName($file[$index]->getClientOriginalName()));
-
-                //dump($newFile->setFileName($fileName));
-                dump($newFile->setPath($path));
-
-                dump($em->persist($newFile));
+                $em->persist($newFile);
                 $em->flush($newFile);
-                dump($index);
             }
-
-            //$em->flush($newFile);
-
-
-//            $fileN = $form->getData()->getFileName();//->getClientOriginalName();       //oryginalna nazwa
-//            $fileName = $fileN[0]->getClientOriginalName();
-//            $file = $newFile->getFileName();                                            //obiekt z nazwami oryg.i gen.
-//            dump($file[0]);
-//            $path = $this->get('app.file_uploader')->upload($file[0]);                     //nazwa wygenerowana
-//            $realPath = $this->getParameter('uploadedfiles')."/".$path;                 //ścieżka + gen.nazwa
-//            $newFile->setMetadata($this->metaRead($realPath));
-//            $newFile->setFileName($fileName);
-//            $newFile->setPath($path);
-//            $em->persist($newFile);
-//
-//            $em->flush($newFile);
-
            // return $this->redirectToRoute('file_new');
         }
 

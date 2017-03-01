@@ -10,6 +10,9 @@ namespace TikaBundle\Repository;
  */
 class UpFileRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return array
+     */
     public function findAllOrdered()
     {
 
@@ -21,13 +24,17 @@ class UpFileRepository extends \Doctrine\ORM\EntityRepository
         return $query;
     }
 
+    /**
+     * @param names $names
+     * @return array
+     */
     public function findByNameOrdered($names)
     {
 
         $query = $this->createQueryBuilder("file")
             ->where("file.fileName LIKE :name")
             ->orderBy("file.fileName")
-            ->setParameter("name", "%". $names ."%")
+            ->setParameter("name", "%".$names."%")
             ->getQuery()
             ->getArrayResult();
 
