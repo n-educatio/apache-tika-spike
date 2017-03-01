@@ -10,3 +10,7 @@ services:
     app.file_uploader:
         class: TikaBundle\FileUploader
         arguments: ['%uploadedfiles%']
+
+    app.meta_file_reader:
+        class: TikaBundle\MetaFileReader
+        arguments: [filePath]

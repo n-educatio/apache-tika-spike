@@ -9,7 +9,7 @@
 namespace TikaBundle;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 
 /**
  * Class FileUploader

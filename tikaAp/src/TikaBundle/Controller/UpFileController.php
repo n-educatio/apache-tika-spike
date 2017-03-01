@@ -86,14 +86,19 @@ class UpFileController extends Controller
                 $newFile = new UpFile();
                 $path = $this->get('app.file_uploader')->upload($file[$index]);
                 $realPath = $this->getParameter('uploadedfiles')."/".$path;
-                $newFile->setMetadata($this->metaRead($realPath));
+
+                $meta = $this->get('app.meta_file_reader');
+
+                $newFile->setMetadata($meta->metaReader($realPath));
+
+
                 $newFile->setFileName($file[$index]->getClientOriginalName());
                 $newFile->setPath($path);
 
                 $em->persist($newFile);
                 $em->flush($newFile);
             }
-           // return $this->redirectToRoute('file_new');
+            return $this->redirectToRoute('file_new');
         }
 
         return array(
@@ -119,38 +124,5 @@ class UpFileController extends Controller
         }
 
         return new JsonResponse($metaData);
-    }
-
-    /**
-     * Read metadata from Apache Tika server
-     *
-     * @param type $fileName
-     * @return type
-     * @throws RuntimeException
-     */
-    private function metaRead($filePath)
-    {
-
-        $url = "http://tika_java:9998/meta";
-
-        $image = fopen($filePath, "rb");
-
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_FAILONERROR, true);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept: application/json"));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_BINARYTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_PUT, 1);
-        curl_setopt($curl, CURLOPT_INFILE, $image);
-        curl_setopt($curl, CURLOPT_INFILESIZE, filesize($filePath));
-
-        $result = curl_exec($curl);
-
-        curl_close($curl);
-        if ($result) {
-            return ($result);
-        }
     }
 }
