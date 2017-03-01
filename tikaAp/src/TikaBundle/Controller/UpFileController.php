@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use SplFileInfo;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,32 +71,55 @@ class UpFileController extends Controller
      */
     public function newAction(Request $request)
     {
+
         $newFile = new UpFile();
         $form = $this->createForm('TikaBundle\Form\UpFileType', $newFile);
         $form->handleRequest($request);
 
-        $newFile->setMetadata('1');
-        $em = $this->getDoctrine()->getManager();
-
-        $files = $em->getRepository('TikaBundle:UpFile')->findAll();
-
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $fileName = $form->getData()->getFileName()->getClientOriginalName();
-            $file = $newFile->getFileName();
+            //dump($form->getData('fileName'));
+            $filesData = $form->getData()->getFileName();
 
-            $path = $this->get('app.file_uploader')->upload($file);
-            $realPath = $this->getParameter('uploadedfiles')."/".$path;
 
-            $newFile->setMetadata($this->metaRead($realPath));
-            $newFile->setFileName($fileName);
-            $newFile->setPath($path);
-            $em->persist($newFile);
-            $em->flush($newFile);
+            $file = $newFile->getFileName();    //tablica obiektów UploadFile
+            foreach ($filesData as $index => $filesNames) {
+                $newFile = new UpFile();
+                //dump($file);
+                dump($file[$index]);        //poszczególny obiekt
+                //dump($file[$index]->getClientOriginalName());
+                $path = $this->get('app.file_uploader')->upload($file[$index]);
+                $realPath = $this->getParameter('uploadedfiles')."/".$path;
+                dump("xxx");
 
-            return $this->redirectToRoute('file_new');// array('id' => $newFile->getId()));
+                dump($newFile->setFileName($file[$index]->getClientOriginalName()));
+
+                //dump($newFile->setFileName($fileName));
+                dump($newFile->setPath($path));
+
+                dump($em->persist($newFile));
+                $em->flush($newFile);
+                dump($index);
+            }
+
+            //$em->flush($newFile);
+
+
+//            $fileN = $form->getData()->getFileName();//->getClientOriginalName();       //oryginalna nazwa
+//            $fileName = $fileN[0]->getClientOriginalName();
+//            $file = $newFile->getFileName();                                            //obiekt z nazwami oryg.i gen.
+//            dump($file[0]);
+//            $path = $this->get('app.file_uploader')->upload($file[0]);                     //nazwa wygenerowana
+//            $realPath = $this->getParameter('uploadedfiles')."/".$path;                 //ścieżka + gen.nazwa
+//            $newFile->setMetadata($this->metaRead($realPath));
+//            $newFile->setFileName($fileName);
+//            $newFile->setPath($path);
+//            $em->persist($newFile);
+//
+//            $em->flush($newFile);
+
+           // return $this->redirectToRoute('file_new');
         }
 
         return array(

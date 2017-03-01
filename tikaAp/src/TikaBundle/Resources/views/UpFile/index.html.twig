@@ -5,13 +5,13 @@
 
     <table id="metaInput" class="table table-striped">
         <tbody>
-            {% for file in files %}
-                <tr>
-                    <td>
-                        <a href="#" class="metaLink" data-href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
-                    </td>
-                </tr>
-            {% endfor %}
+        {% for file in files %}
+            <tr>
+                <td>
+                    <a href="#" class="metaLink" data-href="{{ path('file_show', { 'id': file.id }) }}">{{ file.fileName }}</a>
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

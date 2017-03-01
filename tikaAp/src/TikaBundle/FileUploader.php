@@ -28,6 +28,4 @@ class FileUploader
 
         return $path;
     }
-
-
 }

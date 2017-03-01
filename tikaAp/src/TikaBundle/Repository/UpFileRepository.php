@@ -27,7 +27,7 @@ class UpFileRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->createQueryBuilder("file")
             ->where("file.fileName LIKE :name")
             ->orderBy("file.fileName")
-            ->setParameter("name", "%". $names)
+            ->setParameter("name", "%". $names ."%")
             ->getQuery()
             ->getArrayResult();
 
