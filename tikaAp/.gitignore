@@ -16,4 +16,7 @@
 /web/bundles/
 /web/uploads/
 /web/app_dev.php
+phpunit.xml
+phpunit.xml.dist
+
 

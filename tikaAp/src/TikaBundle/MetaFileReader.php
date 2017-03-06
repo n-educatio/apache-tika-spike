@@ -8,7 +8,10 @@
 
 namespace TikaBundle;
 
-
+/**
+ * Class MetaFileReader
+ * @package TikaBundle
+ */
 class MetaFileReader
 {
     /**
@@ -20,7 +23,7 @@ class MetaFileReader
 
         $url = "http://tika_java:9998/meta";
 
-        $image = fopen($filePath, "rb");
+        $file = fopen($filePath, "rb");
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_FAILONERROR, true);
@@ -30,7 +33,7 @@ class MetaFileReader
         curl_setopt($curl, CURLOPT_BINARYTRANSFER, 1);
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_PUT, 1);
-        curl_setopt($curl, CURLOPT_INFILE, $image);
+        curl_setopt($curl, CURLOPT_INFILE, $file);
         curl_setopt($curl, CURLOPT_INFILESIZE, filesize($filePath));
 
         $result = curl_exec($curl);

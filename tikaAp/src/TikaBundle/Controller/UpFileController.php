@@ -86,18 +86,14 @@ class UpFileController extends Controller
                 $newFile = new UpFile();
                 $path = $this->get('app.file_uploader')->upload($file[$index]);
                 $realPath = $this->getParameter('uploadedfiles')."/".$path;
-
-                $meta = $this->get('app.meta_file_reader');
-
-                $newFile->setMetadata($meta->metaReader($realPath));
-
-
+                $newFile->setMetadata($this->get('app.meta_file_reader')->metaReader($realPath));
                 $newFile->setFileName($file[$index]->getClientOriginalName());
                 $newFile->setPath($path);
 
                 $em->persist($newFile);
                 $em->flush($newFile);
             }
+
             return $this->redirectToRoute('file_new');
         }
 

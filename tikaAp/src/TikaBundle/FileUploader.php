@@ -10,7 +10,6 @@ namespace TikaBundle;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-
 /**
  * Class FileUploader
  * @package TikaBundle
