@@ -19,8 +19,6 @@ use TikaBundle\Entity\UpFile;
 
 /**
  * File controller.
- *
- * @Route("file")
  */
 class UpFileController extends Controller
 {
@@ -63,15 +61,14 @@ class UpFileController extends Controller
     /**
      * Creates a new file entity with metadata from Apache Tika.
      *
-     * @Route("/", name="file_new")
+     * @Route("/new/", name="file_new")
      * @Method({"GET", "POST"})
      * @Template("TikaBundle::base.html.twig")
      * @param Request $request
-     * @return type
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction(Request $request)
     {
-
         $newFile = new UpFile();
         $form = $this->createForm('TikaBundle\Form\UpFileType', $newFile);
         $form->handleRequest($request);
@@ -94,7 +91,7 @@ class UpFileController extends Controller
                 $em->flush($newFile);
             }
 
-            return $this->redirectToRoute('file_new');
+            //return $this->redirectToRoute('file_new');
         }
 
         return array(

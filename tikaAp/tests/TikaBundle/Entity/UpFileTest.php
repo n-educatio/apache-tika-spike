@@ -1,6 +1,7 @@
 <?php
 
 namespace tests\TikaBundle\Entity;
+
 use TikaBundle\Entity\UpFile;
 
 /**
@@ -27,7 +28,8 @@ class UpFileTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function isMetadatavalidString(){
+    public function isMetadatavalidString()
+    {
         //given
         $file = new UpFile();
 
