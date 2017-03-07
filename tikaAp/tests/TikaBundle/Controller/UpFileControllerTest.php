@@ -10,28 +10,62 @@ namespace tests\TikaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/**
- * Class UpFileControllerTest
- * @package tests\TikaBundle\Controller
- */
 class UpFileControllerTest extends WebTestCase
 {
+
+    /**
+     * @test
+     */
+    public function displayFileList()
+    {
+        $client = self::createClient();
+        $url = $client->getContainer()->get('router')->generate('file_index');
+        $client->request('GET', $url);
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @test
+     */
+    public function displayFileListWithDefaultSlug()
+    {
+        $client = self::createClient();
+        $url = $client->getContainer()->get('router')->generate('file_index_by_name');
+        $client->request('GET', $url);
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @test
+     */
+    public function addNewFile()
+    {
+        $client = self::createClient();
+        $url = $client->getContainer()->get('router')->generate('file_new');
+        $client->request('GET', $url);
+        $this->assertTrue($client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @test
+     */
+    public function showUpFile()
+    {
+        $file = new \TikaBundle\Entity\UpFile();
+        $file->setMetadata('metadataJson');
+        $this->assertEquals(json_decode('metadataJson'), $file->getMetadata());
+    }
+
     /**
      * @dataProvider urlProvider
-     * @param url $url
      */
     public function testPageIsSuccessful($url)
     {
-        $client = self::createClient();
-        //$client->request('GET', $url);
-
+        $client = $this->createClient();
         $url = $client->getContainer()->get('router')->generate('file_index');
-        $client->request('POST', $url);
+        $client->request('GET', $url);
 
-        //$this->assertTrue($client->getResponse()->isServerError());
-        $this->assertTrue($client->getResponse()->isClientError());
-        //$this->assertTrue($client->getResponse()->isSuccessful());
-        //die($client->getResponse()->getContent());
+        $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     /**
@@ -40,6 +74,8 @@ class UpFileControllerTest extends WebTestCase
     public function urlProvider()
     {
         return array(
+            array('/index'),
+            array('/new/'),
             array('/'),
         );
     }

@@ -4,7 +4,8 @@ namespace TikaBundle\Controller;
 
 use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+//use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use SplFileInfo;
@@ -91,7 +92,7 @@ class UpFileController extends Controller
                 $em->flush($newFile);
             }
 
-            //return $this->redirectToRoute('file_new');
+            return $this->redirectToRoute('file_new');
         }
 
         return array(
