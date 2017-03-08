@@ -1,17 +1,39 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: marcin
- * Date: 05.03.17
- * Time: 22:25
- */
 namespace tests\TikaBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * Class UpFileControllerTest
+ * @package tests\TikaBundle\Controller
+ */
 class UpFileControllerTest extends WebTestCase
 {
+
+    /**
+     * @test
+     */
+    public function displayValidMainPageTitleH1()
+    {
+        $client = static::createClient();
+        $url = $client->getContainer()->get('router')->generate('file_new');
+        $crawler = $client->request('GET', $url);
+        $this->assertGreaterThan(0, $crawler->filter('h1:contains("File creation")')->count());
+    }
+
+
+    /**
+     * @test
+     */
+    public function displayValidJsonResponse()
+    {
+        $client = static::createClient();
+        $url = $client->getContainer()->get('router')->generate('file_index_by_name');
+        $crawler = $client->request('GET', $url);
+        $this->assertTrue($client->getResponse()->headers->contains('Content-Type','application/json'));
+    }
+
 
     /**
      * @test
@@ -49,7 +71,7 @@ class UpFileControllerTest extends WebTestCase
     /**
      * @test
      */
-    public function showUpFile()
+    public function isValidReturnedDataFromShowUpFile()
     {
         $file = new \TikaBundle\Entity\UpFile();
         $file->setMetadata('metadataJson');
@@ -57,7 +79,19 @@ class UpFileControllerTest extends WebTestCase
     }
 
     /**
+     * @test
+     */
+    public function sendingFileByMainForm()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/new/');
+    }
+    
+
+   //----------
+    /**
      * @dataProvider urlProvider
+     * @param url $url
      */
     public function testPageIsSuccessful($url)
     {
